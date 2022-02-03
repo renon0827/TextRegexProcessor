@@ -30,7 +30,7 @@
       uk-sortable="handle: .uk-sortable-handle"
       uk-grid
     >
-      <li v-for="card in cards" :key="card.Id">
+      <li v-for="card in cards" :key="card.Id" :id="card.Id">
         <div class="uk-card uk-card-default uk-card-body uk-card-small">
           <div>
             <p class="uk-sortable-handle" uk-icon="icon: table; ratio: 1.5"></p>
@@ -103,9 +103,19 @@ export default defineComponent({
       this.$data.cards.splice(idx, 1);
     },
     trans: function () {
-      this.$data.cards.forEach((value) => {
+      let tmp = this.$data.cards;
+      tmp = tmp.sort((a, b) => {
+        const rect1 = document.getElementById(a.Id)?.getBoundingClientRect();
+        const rect2 = document.getElementById(b.Id)?.getBoundingClientRect();
+        if (rect1 === undefined || rect2 === undefined) {
+          return 1;
+        }
+        return rect1.top > rect2.top ? 1 : -1;
+      });
+      this.$data.after = this.$data.before;
+      tmp.forEach((value) => {
         const reg = new RegExp(value.Before, "g");
-        this.$data.after = this.$data.before.replace(reg, value.After);
+        this.$data.after = this.$data.after.replace(reg, value.After);
       });
     },
   },
