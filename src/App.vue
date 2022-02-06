@@ -22,8 +22,17 @@
   </div>
   <div>
     左上のアイコンをドラッグで並び替える。変換は上から順番に実行される。
-    <div class="uk-text-center uk-margin" v-on:click="addCard()">
-      <button class="uk-button uk-button-primary">追加</button>
+    <div class="uk-text-center uk-margin">
+      <button class="uk-button uk-button-primary" v-on:click="addCard()">
+        追加
+      </button>
+      <button
+        class="uk-button uk-button-default uk-margin-left"
+        uk-toggle="target: #hukkatsu-modal"
+        v-on:click="this.$data.jumon = JSON.stringify(this.$data.cards)"
+      >
+        復活の呪文
+      </button>
     </div>
     <ul
       class="uk-grid-small uk-child-width-1-2 uk-child-width-1-1@s"
@@ -55,8 +64,36 @@
         </div>
       </li>
     </ul>
-    <div class="uk-text-center uk-margin" v-on:click="addCard()">
-      <button class="uk-button uk-button-primary">追加</button>
+    <div class="uk-text-center uk-margin">
+      <button class="uk-button uk-button-primary" v-on:click="addCard()">
+        追加
+      </button>
+    </div>
+  </div>
+  <div id="hukkatsu-modal" uk-modal>
+    <div class="uk-modal-dialog uk-modal-body">
+      <h2 class="uk-modal-title">Headline</h2>
+      <textarea
+        class="uk-textarea"
+        rows="5"
+        placeholder="復活の呪文"
+        v-model="jumon"
+      ></textarea>
+      <p class="uk-text-right">
+        <button
+          class="uk-button uk-button-default uk-modal-close"
+          type="button"
+        >
+          閉じる
+        </button>
+        <button
+          class="uk-button uk-button-primary uk-margin-left"
+          type="button"
+          v-on:click="chant()"
+        >
+          唱える
+        </button>
+      </p>
     </div>
   </div>
 </template>
@@ -86,6 +123,7 @@ export default defineComponent({
       cards: [] as RegexCard[],
       before: "",
       after: "",
+      jumon: "",
     };
   },
   methods: {
@@ -117,6 +155,9 @@ export default defineComponent({
         const reg = new RegExp(value.Before, "g");
         this.$data.after = this.$data.after.replace(reg, value.After);
       });
+    },
+    chant: function () {
+      this.$data.cards = JSON.parse(this.$data.jumon) as RegexCard[];
     },
   },
 });
