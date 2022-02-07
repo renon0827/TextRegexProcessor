@@ -72,7 +72,7 @@
   </div>
   <div id="hukkatsu-modal" uk-modal>
     <div class="uk-modal-dialog uk-modal-body">
-      <h2 class="uk-modal-title">Headline</h2>
+      <h2 class="uk-modal-title">復活の呪文</h2>
       <textarea
         class="uk-textarea"
         rows="5"
